@@ -1,28 +1,11 @@
 
 public class IntermediateNeuron extends Neuron{
 	
-	private double bias;
-	private double biasDiff;
-	
 	IntermediateNeuron(ActivationFunction activationfunction){
 		super(activationfunction);
 	}
 	IntermediateNeuron(ActivationFunction activationfunction, double bias){
-		super(activationfunction);
-		this.bias = bias;
-	}
-	
-	public double getBias() {
-		return this.bias;
-	}
-	public void setBias(double bias) {
-		this.bias = bias;
-	}
-	public double getBiasDiff() {
-		return this.biasDiff;
-	}
-	public void setBiasDiff(double biasDiff) {
-		this.biasDiff = biasDiff;
+		super(activationfunction, bias);
 	}
 	
 	public void activate(){

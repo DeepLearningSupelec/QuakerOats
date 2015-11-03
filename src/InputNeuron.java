@@ -17,6 +17,14 @@ public class InputNeuron extends Neuron{
 	public ArrayList<Synapse> getInputsynapses(){
 		return null;
 	}
+	
+	public double getBias(){
+		return 0;
+	}
+	
+	public double getBiasDiff(){
+		return 0;
+	}
 		
 	/*input neurons just transmit the value, we don't apply the activation function, no bias*/
 	public void activate(){

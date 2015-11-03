@@ -120,14 +120,51 @@ public abstract class NeuralNetwork {
 	public OutputLayer getOutputlayer() {
 		return this.outputLayer;
 	}
+	
+	/*if we want to return the list of neuron*/
+//	public List<InputNeuron> getInputlayer() {
+//		return this.inputLayer.getLayer();
+//	}
+//	
+//	public List<IntermediateLayer> getHiddenlayers() {
+//		return this.hiddenLayers;
+//	}
+//	
+//	public List<OutputNeuron> getOutputlayer() {
+//		return this.outputLayer.getLayer();
+//	}
 
-	/*returns the nbLayer th layer*/
+	
+	/*returns the nbLayer th layer layerORlist ?*/
 	public List<?> getLayer(int nbLayer) {
 		if(nbLayer==0){return this.inputLayer.getLayer();}
 		if(nbLayer==this.constructorTab.length-1){return this.outputLayer.getLayer();}
 		else{return this.hiddenLayers.get(nbLayer-1).getLayer();}
 	}
 	/*or List<?> with .getLayer in here*/
+	
+	/*puts diff to 0*/
+	public void reboot(){
+		for (int i = 0; i <= this.getConstructorTab().length - 2; i++) {
+			for (int j = 0; j <= this.getConstructorTab()[i] - 1; j++) {
+				for(Synapse s : ((Neuron) this.getLayer(i).get(j)).getOutputsynapses()){
+					s.setWeightdiff(0);
+				}
+			}
+		}
+		for (int i = this.getConstructorTab().length - 1; i >= 1; i--) {
+			for (int j = 0; j <= this.getConstructorTab()[i] - 1; j++) {
+				((Neuron) this.getLayer(i).get(j)).setNeurondiff(0);
+				((Neuron) this.getLayer(i).get(j)).setBiasDiff(0);
+			}
+		}
+		
+		for (int j = 0; j <= this.getConstructorTab()[0] - 1; j++) {
+			((Neuron) this.getLayer(0).get(j)).setNeurondiff(0);
+		}
+		
+	}
+
 	
 	abstract public void linkNetwork();
 

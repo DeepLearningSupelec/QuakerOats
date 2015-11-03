@@ -5,6 +5,8 @@ public abstract class Neuron {
 	
 	private double activation;
 	private double neurondiff;
+	private double bias;
+	private double biasDiff;
 	private ActivationFunction activationfunction;
 	private ArrayList<Synapse> inputsynapses;
 	private ArrayList<Synapse> outputsynapses;
@@ -14,6 +16,12 @@ public abstract class Neuron {
 		this.activationfunction = activationfunction;
 		this.inputsynapses = new ArrayList<Synapse>();
 		this.outputsynapses = new ArrayList<Synapse>();
+	}
+	public Neuron(ActivationFunction activationfunction, double bias) {
+		this.activationfunction = activationfunction;
+		this.inputsynapses = new ArrayList<Synapse>();
+		this.outputsynapses = new ArrayList<Synapse>();
+		this.bias = bias;
 	}
 	
 	abstract public void activate();
@@ -47,6 +55,22 @@ public abstract class Neuron {
 	}
 	public void setNeurondiff(double neurondiff){
 		this.neurondiff = neurondiff;
+	}
+
+	public double getBias() {
+		return bias;
+	}
+
+	public void setBias(double bias) {
+		this.bias = bias;
+	}
+
+	public double getBiasDiff() {
+		return biasDiff;
+	}
+
+	public void setBiasDiff(double biasDiff) {
+		this.biasDiff = biasDiff;
 	}
 
 }
