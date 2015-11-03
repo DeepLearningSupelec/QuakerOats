@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class BackProp extends LearningAlgorithm {
@@ -18,21 +17,14 @@ public class BackProp extends LearningAlgorithm {
 
 		/* present an input to the network */
 		for (int i = 0; i <= input.length - 1; i++) {
-			this.getNeuralNetwork().getInputlayer().getLayer().get(i).setInput(input[i]);
+			this.getNeuralNetwork().getInputlayer().get(i).setInput(input[i]);
 		}
 
 		/* forward propagates the input by activating each neuron */
-		for (int i = 0; i <= this.getNeuralNetwork().getInputlayer().getLayer().size() - 1; i++) {
-			this.getNeuralNetwork().getInputlayer().getLayer().get(i).activate();
-		}
-		for (int k = 0; k <= this.getNeuralNetwork().getHiddenlayers().size() - 1; k++) {
-			for (int i = 0; i <= this.getNeuralNetwork().getHiddenlayers().get(k)
-					.getLayer().size() - 1; i++) {
-				this.getNeuralNetwork().getHiddenlayers().get(k).getLayer().get(i).activate();
+		for (int i = 0; i <= this.getNeuralNetwork().getConstructorTab().length - 1; i++) {
+			for (int j = 0; j <= this.getNeuralNetwork().getConstructorTab()[i] - 1; j++) {
+					this.getNeuralNetwork().getLayer(i).get(j).activate();
 			}
-		}
-		for (int i = 0; i <= this.getNeuralNetwork().getOutputlayer().getLayer().size() - 1; i++) {
-			this.getNeuralNetwork().getOutputlayer().getLayer().get(i).activate();
 		}
 
 	}
@@ -44,22 +36,22 @@ public class BackProp extends LearningAlgorithm {
 	public void calculateNeuronAndWeightDiffs(double[] ouput) {
 
 		// Calculate neuron diff for the output layer
-		for (int k = 0; k <= this.getNeuralNetwork().getOutputlayer().getLayer().size() - 1; k++) {
-			double delta = this.getNeuralNetwork().getOutputlayer().getLayer().get(k)
+		for (int k = 0; k <= this.getNeuralNetwork().getOutputlayer().size() - 1; k++) {
+			double delta = this.getNeuralNetwork().getOutputlayer().get(k)
 					.getActivationfunction().applyDerivative(
-							this.getNeuralNetwork().getOutputlayer().getLayer().get(k)
+							this.getNeuralNetwork().getOutputlayer().get(k)
 									.getActivation())
-					* (ouput[k]-this.getNeuralNetwork().getOutputlayer().getLayer().get(k).getActivation());
-			this.getNeuralNetwork().getOutputlayer().getLayer().get(k).setNeurondiff(delta);
+					* (ouput[k]-this.getNeuralNetwork().getOutputlayer().get(k).getActivation());
+			this.getNeuralNetwork().getOutputlayer().get(k).setNeurondiff(delta);
 			/*updates the bias*/
-			this.getNeuralNetwork().getOutputlayer().getLayer().get(k).setBiasDiff(this.getNeuralNetwork().getOutputlayer().getLayer().get(k).getBiasDiff() + delta);
+			this.getNeuralNetwork().getOutputlayer().get(k).setBiasDiff(this.getNeuralNetwork().getOutputlayer().get(k).getBiasDiff() + delta);
 			
 		}
 
 		// Update weight diff between the last hidden layer and the output layer
 		for (int k = 0; k <= this.getNeuralNetwork().getHiddenlayers()
 				.get(this.getNeuralNetwork().getHiddenlayers().size() - 1).getLayer().size() - 1; k++) {
-			for (int i = 0; i <= this.getNeuralNetwork().getOutputlayer().getLayer().size() - 1; i++) {
+			for (int i = 0; i <= this.getNeuralNetwork().getOutputlayer().size() - 1; i++) {
 				double deltaweight = this.getNeuralNetwork().getHiddenlayers()
 						.get(this.getNeuralNetwork().getHiddenlayers().size() - 1)
 						.getLayer().get(k).getOutputsynapses().get(i).getOutputneuron()
@@ -116,7 +108,7 @@ public class BackProp extends LearningAlgorithm {
 				.getLayer().size() - 1; i++) {
 			double s = 0;
 			/* for each output synapse of this neuron */
-			for (int j = 0; j <= this.getNeuralNetwork().getOutputlayer().getLayer().size() - 1; j++) {
+			for (int j = 0; j <= this.getNeuralNetwork().getOutputlayer().size() - 1; j++) {
 				s += this.getNeuralNetwork().getHiddenlayers().get(0).getLayer().get(i)
 						.getOutputsynapses().get(j).getOutputneuron()
 						.getNeurondiff()
@@ -161,20 +153,20 @@ public class BackProp extends LearningAlgorithm {
 			}
 		}
 		// Update weightdiff between the input layer and the first hiddenlayer.
-		for (int k = 0; k <= this.getNeuralNetwork().getInputlayer().getLayer().size() - 1; k++) {
+		for (int k = 0; k <= this.getNeuralNetwork().getInputlayer().size() - 1; k++) {
 			for (int i = 0; i <= this.getNeuralNetwork().getHiddenlayers().get(0)
 					.getLayer().size() - 1; i++) {
-				double delta = this.getNeuralNetwork().getInputlayer().getLayer().get(k)
+				double delta = this.getNeuralNetwork().getInputlayer().get(k)
 						.getOutputsynapses().get(i).getOutputneuron()
 						.getNeurondiff()
-						* this.getNeuralNetwork().getInputlayer().getLayer().get(k).getActivation()
-						+ this.getNeuralNetwork().getInputlayer().getLayer().get(k)
+						* this.getNeuralNetwork().getInputlayer().get(k).getActivation()
+						+ this.getNeuralNetwork().getInputlayer().get(k)
 								.getOutputsynapses().get(i).getWeightdiff();
 				//System.out.println(this.neuralNetwork.getInputlayer()[k]
 					//	.getOutputsynapses().get(i).getOutputneuron()
 					//	.getNeurondiff());
 				//System.out.println(this.neuralNetwork.getHiddenlayers().get(0).get(i).getNeurondiff());
-				this.getNeuralNetwork().getInputlayer().getLayer().get(k).getOutputsynapses().get(i)
+				this.getNeuralNetwork().getInputlayer().get(k).getOutputsynapses().get(i)
 						.setWeightdiff(delta);
 				//System.out.println(this.neuralNetwork.getInputlayer()[k]
 						//.getOutputsynapses().get(i).getWeightdiff());
@@ -196,9 +188,9 @@ public class BackProp extends LearningAlgorithm {
 			double norme2 = 0;
 			for (int j = 0; j <= outputs[0].length - 1; j++) {
 				norme2 = norme2
-						+ (this.getNeuralNetwork().getOutputlayer().getLayer().get(j)
+						+ (this.getNeuralNetwork().getOutputlayer().get(j)
 								.getActivation() - outputs[i][j])
-						* (this.getNeuralNetwork().getOutputlayer().getLayer().get(j)
+						* (this.getNeuralNetwork().getOutputlayer().get(j)
 								.getActivation() - outputs[i][j]) / 2
 						/ this.epochSize;
 			}
@@ -208,18 +200,18 @@ public class BackProp extends LearningAlgorithm {
 		this.testerror.add(errorperepoch);
         
 		/* changes the neurons's value and the synapses's weight */
-		for (int i = 0; i <= this.getNeuralNetwork().getInputlayer().getLayer().size() - 1; i++) {
+		for (int i = 0; i <= this.getNeuralNetwork().getInputlayer().size() - 1; i++) {
 			for (int j = 0; j <= this.getNeuralNetwork().getHiddenlayers().get(0)
 					.getLayer().size() - 1; j++) {
 				/*
 				 * weight = weight + learningrate*weight diff // input/hidden
 				 * layers
 				 */
-				this.getNeuralNetwork().getInputlayer().getLayer().get(i).getOutputsynapses().get(j)
-						.setWeight(this.getNeuralNetwork().getInputlayer().getLayer().get(i)
+				this.getNeuralNetwork().getInputlayer().get(i).getOutputsynapses().get(j)
+						.setWeight(this.getNeuralNetwork().getInputlayer().get(i)
 								.getOutputsynapses().get(j).getWeight()
 								+ this.learningRate
-								* this.getNeuralNetwork().getInputlayer().getLayer().get(i)
+								* this.getNeuralNetwork().getInputlayer().get(i)
 										.getOutputsynapses().get(j).getWeightdiff());
 			}
 		}
@@ -247,7 +239,7 @@ public class BackProp extends LearningAlgorithm {
 		
 		for (int i = 0; i <= this.getNeuralNetwork().getHiddenlayers()
 				.get(this.getNeuralNetwork().getHiddenlayers().size() - 1).getLayer().size() - 1; i++) {
-			for (int j = 0; j <= this.getNeuralNetwork().getOutputlayer().getLayer().size() - 1; j++) {
+			for (int j = 0; j <= this.getNeuralNetwork().getOutputlayer().size() - 1; j++) {
 				/*
 				 * weight = weight + learningrate*weight diff // hidden
 				 * layers/output, can be integrated in the previous case but
@@ -284,8 +276,9 @@ public class BackProp extends LearningAlgorithm {
 		}
 	}
 
+	/*test + training*/
+	
 	/* launches the training (inputs = one epoch) */
-	/* test during the training to study the effect of diverse parameters */
 	public void train(double[][] inputsTraining, double[][] outputsTraining,
 			double[][] inputsTest, double[][] outputsTest) {
 		double errorPerEpochTraining = 0;
@@ -309,18 +302,18 @@ public class BackProp extends LearningAlgorithm {
 		// this.trainerror.add(errorPerEpochTraining);
 
 		/* changes the neurons's value and the synapses's weight */
-		for (int i = 0; i <= this.getNeuralNetwork().getInputlayer().getLayer().size() - 1; i++) {
+		for (int i = 0; i <= this.getNeuralNetwork().getInputlayer().size() - 1; i++) {
 			for (int j = 0; j <= this.getNeuralNetwork().getHiddenlayers().get(0)
 					.getLayer().size() - 1; j++) {
 				/*
 				 * weight = weight + learningrate*weight diff // input/hidden
 				 * layers
 				 */
-				this.getNeuralNetwork().getInputlayer().getLayer().get(i).getOutputsynapses().get(j)
-						.setWeight(this.getNeuralNetwork().getInputlayer().getLayer().get(i)
+				this.getNeuralNetwork().getInputlayer().get(i).getOutputsynapses().get(j)
+						.setWeight(this.getNeuralNetwork().getInputlayer().get(i)
 								.getOutputsynapses().get(j).getWeight()
 								+ this.learningRate
-								* this.getNeuralNetwork().getInputlayer().getLayer().get(i)
+								* this.getNeuralNetwork().getInputlayer().get(i)
 										.getOutputsynapses().get(j).getWeightdiff());
 			}
 		}
@@ -347,7 +340,7 @@ public class BackProp extends LearningAlgorithm {
 		}
 		for (int i = 0; i <= this.getNeuralNetwork().getHiddenlayers()
 				.get(this.getNeuralNetwork().getHiddenlayers().size() - 1).getLayer().size() - 1; i++) {
-			for (int j = 0; j <= this.getNeuralNetwork().getOutputlayer().getLayer().size() - 1; j++) {
+			for (int j = 0; j <= this.getNeuralNetwork().getOutputlayer().size() - 1; j++) {
 				/*
 				 * weight = weight + learningrate*weight diff // hidden
 				 * layers/output, can be integrated in the previous case but
@@ -376,9 +369,9 @@ public class BackProp extends LearningAlgorithm {
 			this.calculateActivations(inputsTraining[i]);
 			double norme2 = 0;
 			for (int j = 0; j <= outputsTraining.length - 1; j++) {
-				norme2 += (this.getNeuralNetwork().getOutputlayer().getLayer().get(j)
+				norme2 += (this.getNeuralNetwork().getOutputlayer().get(j)
 						.getActivation() - outputsTraining[i][j])
-						* (this.getNeuralNetwork().getOutputlayer().getLayer().get(j)
+						* (this.getNeuralNetwork().getOutputlayer().get(j)
 								.getActivation() - outputsTraining[i][j])
 						/ 2
 						/ inputsTraining.length;
@@ -392,9 +385,9 @@ public class BackProp extends LearningAlgorithm {
 			this.calculateActivations(inputsTest[i]);
 			double norme2 = 0;
 			for (int j = 0; j <= outputsTest.length - 1; j++) {
-				norme2 += (this.getNeuralNetwork().getOutputlayer().getLayer().get(j)
+				norme2 += (this.getNeuralNetwork().getOutputlayer().get(j)
 						.getActivation() - outputsTest[i][j])
-						* (this.getNeuralNetwork().getOutputlayer().getLayer().get(j)
+						* (this.getNeuralNetwork().getOutputlayer().get(j)
 								.getActivation() - outputsTest[i][j])
 						/ 2
 						/ inputsTest.length;
@@ -406,7 +399,6 @@ public class BackProp extends LearningAlgorithm {
 	}
 
 	/* launches the training (inputs = all the epochs) */
-	/* test during the training to study the effect of diverse parameters */
 	public void globaltraining(double[][] inputsTraining,
 			double[][] outputsTraining, double[][] inputsTest,
 			double[][] outputsTest) {

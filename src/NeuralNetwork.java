@@ -109,34 +109,20 @@ public abstract class NeuralNetwork {
 		return constructorTab;
 	}
 	
-	public InputLayer getInputlayer() {
-		return this.inputLayer;
+	public List<InputNeuron> getInputlayer() {
+		return this.inputLayer.getLayer();
 	}
 	
 	public List<IntermediateLayer> getHiddenlayers() {
 		return this.hiddenLayers;
 	}
 	
-	public OutputLayer getOutputlayer() {
-		return this.outputLayer;
+	public List<OutputNeuron> getOutputlayer() {
+		return this.outputLayer.getLayer();
 	}
-	
-	/*if we want to return the list of neuron*/
-//	public List<InputNeuron> getInputlayer() {
-//		return this.inputLayer.getLayer();
-//	}
-//	
-//	public List<IntermediateLayer> getHiddenlayers() {
-//		return this.hiddenLayers;
-//	}
-//	
-//	public List<OutputNeuron> getOutputlayer() {
-//		return this.outputLayer.getLayer();
-//	}
 
-	
 	/*returns the nbLayer th layer layerORlist ?*/
-	public List<?> getLayer(int nbLayer) {
+	public List<> getLayer(int nbLayer) {
 		if(nbLayer==0){return this.inputLayer.getLayer();}
 		if(nbLayer==this.constructorTab.length-1){return this.outputLayer.getLayer();}
 		else{return this.hiddenLayers.get(nbLayer-1).getLayer();}
@@ -147,7 +133,7 @@ public abstract class NeuralNetwork {
 	public void reboot(){
 		for (int i = 0; i <= this.getConstructorTab().length - 2; i++) {
 			for (int j = 0; j <= this.getConstructorTab()[i] - 1; j++) {
-				for(Synapse s : ((Neuron) this.getLayer(i).get(j)).getOutputsynapses()){
+				for(Synapse s : this.getLayer(i).get(j).getOutputsynapses()){
 					s.setWeightdiff(0);
 				}
 			}
@@ -165,17 +151,6 @@ public abstract class NeuralNetwork {
 		
 	}
 
-	
 	abstract public void linkNetwork();
-
-	abstract public void setInput(double[] input);
-	abstract public void activate();
-	abstract public void forwardpropagation(double[] input);
-	abstract public double[] getOutput();
-	
-	abstract public void train(double[][] inputs, double[][] outputs);
-	
-	
-	
 
 }

@@ -35,8 +35,19 @@ public abstract class LearningAlgorithm {
 	
 	abstract public void calculateNeuronAndWeightDiffs(double[] ouput);
 	
-	abstract public void train(double[][] inputs, double[][] outputs);
-	abstract public void globaltraining(double[][] Inputsdata, double[][] Outputsdata);
+	abstract public void train(double[][] inputsTraining,
+			double[][] outputsTraining);
+
+	abstract public void globaltraining(double[][] inputsTraining,
+			double[][] outputsTraining);
+
+	abstract public void train(double[][] inputsTraining,
+			double[][] outputsTraining, double[][] inputsTest,
+			double[][] outputsTest);
+
+	abstract public void globaltraining(double[][] inputsTraining,
+			double[][] outputsTraining, double[][] inputsTest,
+			double[][] outputsTest);
 	
 	/*splits the inputs into epochs of size epochSize (attribute)*/
 	public List<double[][]> splitIntoEpochs(double[][] inputs){
