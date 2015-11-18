@@ -3,45 +3,45 @@ import java.util.ArrayList;
 public abstract class Neuron {
 	
 	private double activation;
-	private double neurondiff;
+	private double neuronDiff;
 	private double bias;
 	private double biasDiff;
-	private ActivationFunction activationfunction;
-	private ArrayList<Synapse> inputsynapses;
-	private ArrayList<Synapse> outputsynapses;
+	private ActivationFunction activationFunction;
+	private ArrayList<Synapse> inputSynapses;
+	private ArrayList<Synapse> outputSynapses;
 	
 	
-	public Neuron(ActivationFunction activationfunction) {
-		this.activationfunction = activationfunction;
-		this.inputsynapses = new ArrayList<Synapse>();
-		this.outputsynapses = new ArrayList<Synapse>();
+	public Neuron(ActivationFunction activationFunction) {
+		this.activationFunction = activationFunction;
+		this.inputSynapses = new ArrayList<Synapse>();
+		this.outputSynapses = new ArrayList<Synapse>();
 	}
-	public Neuron(ActivationFunction activationfunction, double bias) {
-		this.activationfunction = activationfunction;
-		this.inputsynapses = new ArrayList<Synapse>();
-		this.outputsynapses = new ArrayList<Synapse>();
+	public Neuron(ActivationFunction activationFunction, double bias) {
+		this.activationFunction = activationFunction;
+		this.inputSynapses = new ArrayList<Synapse>();
+		this.outputSynapses = new ArrayList<Synapse>();
 		this.bias = bias;
 	}
 	
 	abstract public void activate();
 	
-	public ActivationFunction getActivationfunction() {
-		return this.activationfunction;
+	public ActivationFunction getActivationFunction() {
+		return this.activationFunction;
 	}
-	public void setActivationfunction(ActivationFunction activationfunction) {
-		this.activationfunction = activationfunction;
+	public void setActivationFunction(ActivationFunction activationFunction) {
+		this.activationFunction = activationFunction;
 	}
-	public ArrayList<Synapse> getInputsynapses() {
-		return this.inputsynapses;
+	public ArrayList<Synapse> getInputSynapses() {
+		return this.inputSynapses;
 	}
-	public void setInputsynapses(ArrayList<Synapse> inputsynapses) {
-		this.inputsynapses = inputsynapses;
+	public void setInputSynapses(ArrayList<Synapse> inputSynapses) {
+		this.inputSynapses = inputSynapses;
 	}
-	public ArrayList<Synapse> getOutputsynapses() {
-		return this.outputsynapses;
+	public ArrayList<Synapse> getOutputSynapses() {
+		return this.outputSynapses;
 	}
-	public void setOutputsynapses(ArrayList<Synapse> outputsynapses) {
-		this.outputsynapses = outputsynapses;
+	public void setOutputSynapses(ArrayList<Synapse> outputSynapses) {
+		this.outputSynapses = outputSynapses;
 	}
 	public double getActivation(){
 		return this.activation;
@@ -50,24 +50,20 @@ public abstract class Neuron {
 		this.activation = activation;
 	}
 	public double getNeurondiff(){
-		return this.neurondiff;
+		return this.neuronDiff;
 	}
 	public void setNeurondiff(double neurondiff){
-		this.neurondiff = neurondiff;
+		this.neuronDiff = neurondiff;
 	}
-
 	public double getBias() {
 		return bias;
 	}
-
 	public void setBias(double bias) {
 		this.bias = bias;
 	}
-
 	public double getBiasDiff() {
 		return biasDiff;
 	}
-
 	public void setBiasDiff(double biasDiff) {
 		this.biasDiff = biasDiff;
 	}

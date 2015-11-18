@@ -6,27 +6,47 @@ public class FeedForward extends NeuralNetwork {
 		super(constructorTab);
 	}
 
-	public FeedForward(int[] constructorTab,
-			ActivationFunction activationFunction,
-			LearningAlgorithm learningAlgorithm)
-			throws InvalidNetworkConstruction {
-		super(constructorTab, activationFunction, learningAlgorithm);
-	}
+//	public FeedForward(int[] constructorTab,
+//			ActivationFunction activationFunction,
+//			LearningAlgorithm learningAlgorithm)
+//			throws InvalidNetworkConstruction {
+//		super(constructorTab, activationFunction, learningAlgorithm);
+//	}
 
 	/* links the network */
 	public void linkNetwork() {
 		for (int i = 0; i <= this.getConstructorTab().length - 2; i++) {
 			for (int j = 0; j <= this.getConstructorTab()[i] - 1; j++) {
-				for (int k = 0; k <= this.getConstructorTab()[i + 1] - 1; k++) {
-					Synapse a = new Synapse(this.getLayer(i).get(j), this
-							.getLayer(i + 1).get(k));
-					((Neuron) this.getLayer(i).get(j)).getOutputsynapses().add(
+				for (int k = 0; k <= this.getConstructorTab()[i+1] - 1; k++) {
+					Synapse a = new Synapse((Neuron) this.getLayer(i).get(j), (Neuron) this
+							.getLayer(i+1).get(k));
+					((Neuron) this.getLayer(i).get(j)).getOutputSynapses().add(
 							a);
-					((Neuron) this.getLayer(i + 1).get(k)).getInputsynapses()
+					((Neuron) this.getLayer(i + 1).get(k)).getInputSynapses()
 							.add(a);
 				}
 			}
 		}
+	}
+	
+	public void reboot(){
+		for (int i = 0; i <= this.getConstructorTab().length - 2; i++) {
+			for (int j = 0; j <= this.getConstructorTab()[i] - 1; j++) {
+				for(Synapse s : ((Neuron) this.getLayer(i).get(j)).getOutputSynapses()){
+					s.setWeightDiff(0);
+				}
+			}
+		}
+		for (int i = this.getConstructorTab().length - 1; i >= 1; i--) {
+			for (int j = 0; j <= this.getConstructorTab()[i] - 1; j++) {
+				((Neuron) this.getLayer(i).get(j)).setNeurondiff(0);
+				((Neuron) this.getLayer(i).get(j)).setBiasDiff(0);
+			}
+		}
+		for (int j = 0; j <= this.getConstructorTab()[0] - 1; j++) {
+			((Neuron) this.getLayer(0).get(j)).setNeurondiff(0);
+		}
+		
 	}
 
 }

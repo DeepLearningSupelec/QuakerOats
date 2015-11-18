@@ -2,16 +2,13 @@
 public class Synapse {
 	
 	private double weight;
-	private double weightdiff;
-	private Neuron inputneuron;
-	private Neuron outputneuron;
+	private double weightDiff;
+	private Neuron inputNeuron;
+	private Neuron outputNeuron;
 	
-	public Synapse(Neuron inputneuron,Neuron outputneuron) {
-		this.inputneuron = inputneuron;
-		this.outputneuron = outputneuron;
-	}
-	public Synapse(Object object, Object object2) {
-		// TODO Auto-generated constructor stub
+	public Synapse(Neuron inputNeuron, Neuron outputNeuron) {
+		this.inputNeuron = inputNeuron;
+		this.outputNeuron = outputNeuron;
 	}
 	public double getWeight() {
 		return this.weight;
@@ -19,23 +16,23 @@ public class Synapse {
 	public void setWeight(double weight) {
 		this.weight = weight;
 	}
-	public double getWeightdiff() {
-		return this.weightdiff;
+	public double getWeightDiff() {
+		return this.weightDiff;
 	}
-	public void setWeightdiff(double weightdiff) {
-		this.weightdiff = weightdiff;
+	public void setWeightDiff(double weightDiff) {
+		this.weightDiff = weightDiff;
 	}
-	public Neuron getInputneuron() {
-		return this.inputneuron;
+	public Neuron getInputNeuron() {
+		return this.inputNeuron;
 	}
-	public void setInputneuron(Neuron inputneuron) {
-		this.inputneuron = inputneuron;
+	public void setInputNeuron(Neuron inputNeuron) {
+		this.inputNeuron = inputNeuron;
 	}
-	public Neuron getOutputneuron() {
-		return this.outputneuron;
+	public Neuron getOutputNeuron() {
+		return this.outputNeuron;
 	}
-	public void setOutputneuron(Neuron outputneuron) {
-		this.outputneuron = outputneuron;
+	public void setOutputNeuron(Neuron outputNeuron) {
+		this.outputNeuron = outputNeuron;
 	}
 
 }

@@ -3,25 +3,25 @@ import java.util.ArrayList;
 
 public class OutputNeuron extends Neuron{
 	
-	OutputNeuron(ActivationFunction activationfunction){
-		super(activationfunction);
+	OutputNeuron(ActivationFunction activationFunction){
+		super(activationFunction);
 	}
-	OutputNeuron(ActivationFunction activationfunction, double bias){
-		super(activationfunction, bias);
+	OutputNeuron(ActivationFunction activationFunction, double bias){
+		super(activationFunction, bias);
 	}
 
-	public ArrayList<Synapse> getOutputsynapses(){
+	public ArrayList<Synapse> getOutputSynapses(){
 		return null;
 	}
 	
 	public void activate(){
 		double s = 0;
-		for(int i = 0; i <= this.getInputsynapses().size()-1; i++){
-			s += this.getInputsynapses().get(i).getWeight()
-				*this.getInputsynapses().get(i).getInputneuron().getActivation();
+		for(int i = 0; i <= this.getInputSynapses().size()-1; i++){
+			s += this.getInputSynapses().get(i).getWeight()
+				*this.getInputSynapses().get(i).getInputNeuron().getActivation();
 		}
 		s += this.getBias();
-		this.setActivation(this.getActivationfunction().apply(s));
+		this.setActivation(this.getActivationFunction().apply(s));
 	
 	}
 	

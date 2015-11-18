@@ -6,8 +6,8 @@ public abstract class LearningAlgorithm {
 	private NeuralNetwork neuralNetwork;
 	public double learningRate;
 	public int epochSize;
-	public ArrayList<Double> trainerror;
-	public ArrayList<Double> testerror;
+	public ArrayList<Double> trainError;
+	public ArrayList<Double> testError;
 	public ToCsv csv;
 	public OutputData outputdata;
 	
@@ -16,8 +16,8 @@ public abstract class LearningAlgorithm {
 		this.learningRate=0.01;
 		this.epochSize=20;
 		this.csv = new ToCsv(this);
-		trainerror = new ArrayList<Double>();
-		testerror = new ArrayList<Double>();
+		trainError = new ArrayList<Double>();
+		testError = new ArrayList<Double>();
 		outputdata = new OutputData(new ArrayList<Output>());
 	}
 	
@@ -26,28 +26,28 @@ public abstract class LearningAlgorithm {
 		this.learningRate=learningRate;
 		this.epochSize=epochSize;
 		this.csv = new ToCsv(this);
-		trainerror = new ArrayList<Double>();
-		testerror = new ArrayList<Double>();
+		trainError = new ArrayList<Double>();
+		testError = new ArrayList<Double>();
 		outputdata = new OutputData(new ArrayList<Output>());
 	}
 	
 	abstract public void calculateActivations(double[] input);
 	
-	abstract public void calculateNeuronAndWeightDiffs(double[] ouput);
-	
-	abstract public void train(double[][] inputsTraining,
-			double[][] outputsTraining);
-
-	abstract public void globaltraining(double[][] inputsTraining,
-			double[][] outputsTraining);
-
-	abstract public void train(double[][] inputsTraining,
-			double[][] outputsTraining, double[][] inputsTest,
-			double[][] outputsTest);
-
-	abstract public void globaltraining(double[][] inputsTraining,
-			double[][] outputsTraining, double[][] inputsTest,
-			double[][] outputsTest);
+//	abstract public void calculateNeuronAndWeightDiffs(double[] ouput);
+//	
+//	abstract public void train(double[][] inputsTraining,
+//			double[][] outputsTraining);
+//
+//	abstract public void globaltraining(double[][] inputsTraining,
+//			double[][] outputsTraining);
+//
+//	abstract public void train(double[][] inputsTraining,
+//			double[][] outputsTraining, double[][] inputsTest,
+//			double[][] outputsTest);
+//
+//	abstract public void globaltraining(double[][] inputsTraining,
+//			double[][] outputsTraining, double[][] inputsTest,
+//			double[][] outputsTest);
 	
 	/*splits the inputs into epochs of size epochSize (attribute)*/
 	public List<double[][]> splitIntoEpochs(double[][] inputs){
@@ -80,12 +80,9 @@ public abstract class LearningAlgorithm {
 	public NeuralNetwork getNeuralNetwork() {
 		return neuralNetwork;
 	}
-
 	public void setNeuralNetwork(NeuralNetwork neuralNetwork) {
 		this.neuralNetwork = neuralNetwork;
 	};
-	
-	/*then splitIntoEpochs, train on each epoch, export to csv, test during the training*/
 	
 	
 }

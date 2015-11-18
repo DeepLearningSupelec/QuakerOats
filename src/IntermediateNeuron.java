@@ -1,21 +1,21 @@
 
 public class IntermediateNeuron extends Neuron{
 	
-	IntermediateNeuron(ActivationFunction activationfunction){
-		super(activationfunction);
+	IntermediateNeuron(ActivationFunction activationFunction){
+		super(activationFunction);
 	}
-	IntermediateNeuron(ActivationFunction activationfunction, double bias){
-		super(activationfunction, bias);
+	IntermediateNeuron(ActivationFunction activationFunction, double bias){
+		super(activationFunction, bias);
 	}
 	
 	public void activate(){
 		double s = 0;
-		for(int i = 0; i <= this.getInputsynapses().size()-1; i++){
-			s += this.getInputsynapses().get(i).getWeight()
-				*this.getInputsynapses().get(i).getInputneuron().getActivation();
+		for(int i = 0; i <= this.getInputSynapses().size()-1; i++){
+			s += this.getInputSynapses().get(i).getWeight()
+				*this.getInputSynapses().get(i).getInputNeuron().getActivation();
 		}
 		s += this.getBias();
-		this.setActivation(this.getActivationfunction().apply(s));
+		this.setActivation(this.getActivationFunction().apply(s));
 	}
 
 }
