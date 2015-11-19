@@ -14,15 +14,14 @@ public class ToCsv {
 	private static final String NEW_LINE_SEPARATOR = "\n";
 	private static final String FILE_HEADER = "quadraticErrorTraining,percentageErrorTraining,quadraticErrorTest,percentageErrorTest";
 
-	public void writeCsvFile(String fileName) {
+	public void writeCsvFile(String filePath) {
 		FileWriter fileWriter = null;
 		try {
-			String title = "LRate:" + this.learningAlgorithm.learningRate
-					+ "/ESize:" + this.learningAlgorithm.epochSize
-					+ "/EBetweenStat:"
+			String title = "LRate-" + this.learningAlgorithm.learningRate
+					+ "-ESize-" + this.learningAlgorithm.epochSize
+					+ "-EBetweenStat-"
 					+ this.learningAlgorithm.numberOfEpochBetweenEachMeasure;
-			fileWriter = new FileWriter(
-					"C:/Users/Léo/Desktop/" + title + ".csv");
+			fileWriter = new FileWriter(filePath + title + ".csv");
 
 			// Write the CSV file header
 			fileWriter.append(FILE_HEADER.toString());

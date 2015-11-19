@@ -49,10 +49,10 @@ public abstract class Neuron {
 	public void setActivation(double activation){
 		this.activation = activation;
 	}
-	public double getNeurondiff(){
+	public double getNeuronDiff(){
 		return this.neuronDiff;
 	}
-	public void setNeurondiff(double neurondiff){
+	public void setNeuronDiff(double neurondiff){
 		this.neuronDiff = neurondiff;
 	}
 	public double getBias() {

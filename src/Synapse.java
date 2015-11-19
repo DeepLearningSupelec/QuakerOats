@@ -9,6 +9,7 @@ public class Synapse {
 	public Synapse(Neuron inputNeuron, Neuron outputNeuron) {
 		this.inputNeuron = inputNeuron;
 		this.outputNeuron = outputNeuron;
+		this.weightDiff = 0;
 	}
 	public double getWeight() {
 		return this.weight;
