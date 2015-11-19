@@ -325,7 +325,7 @@ public class BackProp extends LearningAlgorithm {
 					//if(maxOutputIndex == realOutputIndex){percentageErrorTest -= 1/inputsDataTest.length;}
 					if(maxOutputIndex == realOutputIndex){nbOfErrorTest += 1;}
 				}
-				percentageErrorTest = 1 - nbOfErrorTest/inputsDataTraining.length;
+				percentageErrorTest = 1 - nbOfErrorTest/inputsDataTest.length;
 				
 				this.outputData.getData().add(new Output(quadraticErrorTraining, percentageErrorTraining, quadraticErrorTest, percentageErrorTest));
 				
