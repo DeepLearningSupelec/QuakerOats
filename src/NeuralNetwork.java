@@ -137,6 +137,43 @@ public abstract class NeuralNetwork {
 			this.outputLayer = outputLayer;
 		}
 	}
+	
+	public NeuralNetwork(int[] constructorTab, double bias) throws InvalidNetworkConstruction{
+		/*exception if the constructor array length is too small*/
+		if(constructorTab.length<3){
+			throw new InvalidNetworkConstruction();
+		}
+		else{
+			this.constructorTab = constructorTab;
+			this.learningAlgorithm = new BackProp(this);
+			int length = constructorTab.length;
+			
+			ActivationFunction activationFunction = new Sigmoid();
+			
+			ArrayList<InputNeuron> inputLayer = new ArrayList<InputNeuron>(constructorTab[0]);
+			for(int i=0; i<=constructorTab[0]-1; i++){
+				inputLayer.add(new InputNeuron(activationFunction));
+			}
+			
+			ArrayList<OutputNeuron> outputLayer = new ArrayList<OutputNeuron>(constructorTab[length-1]);
+			for(int i=0; i<=constructorTab[length-1]-1; i++){
+				outputLayer.add(new OutputNeuron(activationFunction, bias));
+			}
+			
+			List<ArrayList<IntermediateNeuron>> hiddenLayers = new ArrayList<ArrayList<IntermediateNeuron>>(length-2);
+			for(int i=1; i<=length-2; i++){
+				ArrayList<IntermediateNeuron> iemeLayer = new ArrayList<IntermediateNeuron>(constructorTab[i]);
+				for(int k=1; k<=constructorTab[i]; k++){
+					iemeLayer.add(new IntermediateNeuron(activationFunction, bias));
+				}
+				hiddenLayers.add(iemeLayer);
+			}
+			
+			this.inputLayer = inputLayer;
+			this.hiddenLayers = hiddenLayers;
+			this.outputLayer = outputLayer;
+		}
+	}
 		
 	public ActivationFunction getActivationFunction() {
 		return activationFunction;

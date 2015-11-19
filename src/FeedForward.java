@@ -5,6 +5,10 @@ public class FeedForward extends NeuralNetwork {
 	public FeedForward(int[] constructorTab) throws InvalidNetworkConstruction {
 		super(constructorTab);
 	}
+	
+	public FeedForward(int[] constructorTab, double bias) throws InvalidNetworkConstruction {
+		super(constructorTab, bias);
+	}
 
 //	public FeedForward(int[] constructorTab,
 //			ActivationFunction activationFunction,

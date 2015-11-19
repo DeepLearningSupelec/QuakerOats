@@ -33,8 +33,8 @@ public abstract class LearningAlgorithm {
 	
 	abstract public void calculateActivations(double[] input);
 	
-//	abstract public void calculateNeuronAndWeightDiffs(double[] ouput);
-//	
+	abstract public void calculateNeuronAndWeightDiffs(double[] ouput);
+	
 //	abstract public void train(double[][] inputsTraining,
 //			double[][] outputsTraining);
 //

@@ -4,8 +4,7 @@ public class testXOR {
 	public static void main(String[] args) throws InvalidNetworkConstruction {
 		// TODO Auto-generated method stub
 		int[] constructorTab =new int[]{2,2,1};
-		FeedForward ff = new FeedForward(constructorTab);
-		System.out.println(ff.getLayer(0));
+		FeedForward ff = new FeedForward(constructorTab, 0);
 		BackProp bp = new BackProp(ff);
 		ff.setLearningAlgorithm(bp);
 		ff.linkNetwork();
@@ -33,8 +32,17 @@ public class testXOR {
 		
 		bp.calculateActivations(inputdata[0]);
 		
-		System.out.println(ff.getHiddenlayers().get(0).get(0).getActivation());
-		System.out.println(ff.getHiddenlayers().get(0).get(1).getActivation());
+		System.out.println("out_h1 : " + ff.getHiddenlayers().get(0).get(0).getActivation());
+		System.out.println("out_h2 : " + ff.getHiddenlayers().get(0).get(1).getActivation());
+		System.out.println("out_o1 : " + ff.getOutputlayer().get(0).getActivation());
+		
+		bp.calculateNeuronAndWeightDiffs(outputdata[0]);
+		System.out.println("delta w5 : " + ff.getHiddenlayers().get(0).get(0).getOutputSynapses().get(0).getWeightDiff());
+		System.out.println("delta w6 : " + ff.getHiddenlayers().get(0).get(1).getOutputSynapses().get(0).getWeightDiff());
+		System.out.println("delte w1 : " + ff.getInputlayer().get(0).getOutputSynapses().get(0).getWeightDiff());
+		System.out.println("delte w2 : " + ff.getInputlayer().get(0).getOutputSynapses().get(1).getWeightDiff());
+		System.out.println("delte w3 : " + ff.getInputlayer().get(1).getOutputSynapses().get(0).getWeightDiff());
+		System.out.println("delte w4 : " + ff.getInputlayer().get(1).getOutputSynapses().get(1).getWeightDiff());
 	}
 
 }
