@@ -4,58 +4,65 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ToCsv {
-public LearningAlgorithm learningalgorithm;
-public ToCsv(LearningAlgorithm learningalgorithm){
-	this.learningalgorithm = learningalgorithm;
-}
+	private LearningAlgorithm learningAlgorithm;
 
-private static final String COMMA_DELIMITER = ",";
-private static final String NEW_LINE_SEPARATOR = "\n";
-private static final String FILE_HEADER = "epochsize,learningrate,trainerror,testerror";
-public void writeCsvFile(String fileName) {
-	FileWriter fileWriter = null;     
-       try {
-           fileWriter = new FileWriter("C:/Users/GOUNGOUNE/Desktop/Deep learning/Test1.csv");
+	public ToCsv(LearningAlgorithm learningalgorithm) {
+		this.learningAlgorithm = learningalgorithm;
+	}
 
-           //Write the CSV file header
-           fileWriter.append(FILE_HEADER.toString());
-            
-           //Add a new line separator after the header
-           fileWriter.append(NEW_LINE_SEPARATOR);
-            
-           //Write a new student object list to the CSV file
-           for (Output output : this.learningalgorithm.outputdata.data) {
-               fileWriter.append(String.valueOf(output.epochsize));
-               fileWriter.append(COMMA_DELIMITER);
-               fileWriter.append(String.valueOf(output.learningrate));
-               fileWriter.append(COMMA_DELIMITER);
-              fileWriter.append(String.valueOf(output.trainerror));
-               fileWriter.append(COMMA_DELIMITER);
-               fileWriter.append(String.valueOf(output.testerror));
-               fileWriter.append(COMMA_DELIMITER);
-               fileWriter.append(NEW_LINE_SEPARATOR);
-          }          
-            
-           System.out.println("CSV file was created successfully !!!");         
-       } catch (Exception e) {
-           System.out.println("Error in CsvFileWriter !!!");
-           e.printStackTrace();
-       } finally {
-            
-           try {
-               fileWriter.flush();
-               fileWriter.close();
-           } catch (IOException e) {
-               System.out.println("Error while flushing/closing fileWriter !!!");
-               e.printStackTrace();
+	private static final String COMMA_DELIMITER = ",";
+	private static final String NEW_LINE_SEPARATOR = "\n";
+	private static final String FILE_HEADER = "quadraticErrorTraining,percentageErrorTraining,quadraticErrorTest,percentageErrorTest";
 
-           }
+	public void writeCsvFile(String fileName) {
+		FileWriter fileWriter = null;
+		try {
+			String title = "LRate:" + this.learningAlgorithm.learningRate
+					+ "/ESize:" + this.learningAlgorithm.epochSize
+					+ "/EBetweenStat:"
+					+ this.learningAlgorithm.numberOfEpochBetweenEachMeasure;
+			fileWriter = new FileWriter(
+					"C:/Users/Léo/Desktop/" + title + ".csv");
 
-            
+			// Write the CSV file header
+			fileWriter.append(FILE_HEADER.toString());
 
-       }
+			// Add a new line separator after the header
+			fileWriter.append(NEW_LINE_SEPARATOR);
 
-   }
+			// Write a new output object list to the CSV file
+			for (Output output : this.learningAlgorithm.outputData.getData()) {
+				fileWriter
+						.append(String.valueOf(output.quadraticErrorTraining));
+				fileWriter.append(COMMA_DELIMITER);
+				fileWriter.append(String
+						.valueOf(output.percentageErrorTraining));
+				fileWriter.append(COMMA_DELIMITER);
+				fileWriter.append(String.valueOf(output.quadraticErrorTest));
+				fileWriter.append(COMMA_DELIMITER);
+				fileWriter.append(String.valueOf(output.percentageErrorTest));
+				fileWriter.append(COMMA_DELIMITER);
+				fileWriter.append(NEW_LINE_SEPARATOR);
+			}
 
+			System.out.println("CSV file was created successfully !!!");
+		} catch (Exception e) {
+			System.out.println("Error in CsvFileWriter !!!");
+			e.printStackTrace();
+		} finally {
+
+			try {
+				fileWriter.flush();
+				fileWriter.close();
+			} catch (IOException e) {
+				System.out
+						.println("Error while flushing/closing fileWriter !!!");
+				e.printStackTrace();
+
+			}
+
+		}
+
+	}
 
 }

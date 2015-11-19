@@ -8,8 +8,8 @@ public class BackProp extends LearningAlgorithm {
 	}
 
 	public BackProp(NeuralNetwork neuralNetwork, double learningRate,
-			int epochSize) {
-		super(neuralNetwork, learningRate, epochSize);
+			int epochSize, int numberOfEpochBetweenEachMeasure) {
+		super(neuralNetwork, learningRate, epochSize, numberOfEpochBetweenEachMeasure);
 	}
 
 	/* forward propagates the input, neuron's activation are changed */
@@ -35,7 +35,7 @@ public class BackProp extends LearningAlgorithm {
 	 */
 	public void calculateNeuronAndWeightDiffs(double[] realOutput) {
 		
-		// Calculate neuron and biasDiff for the output layer
+		// Calculate neuronDiff and biasDiff for the output layer
 		for (int k = 0; k <= this.getNeuralNetwork().getOutputlayer().size() - 1; k++) {
 			double neuronDiff = - this.getNeuralNetwork().getOutputlayer().get(k)
 					.getActivationFunction().applyDerivative(
@@ -75,7 +75,7 @@ public class BackProp extends LearningAlgorithm {
 		}
 		
 		
-		// Calculate neuron and bias diff for each neuron of the hidden layers
+		// Calculate neuronDiff and biasDiff for each neuron of the hidden layers
 		
 		/* for each hidden layer */
 		for (int k = this.getNeuralNetwork().getHiddenlayers().size() - 1; k >= 0; k--) {
@@ -111,10 +111,9 @@ public class BackProp extends LearningAlgorithm {
 		}
 		
 		
-		// Update weightDiff between two neurons in hiddenLayers
+		// Update weightDiff between Input and all the hiddenLayers
 		
-		/* for each layer (length - 1 to respect the indexation, - 2 because 
-		 * between last hidden and output already done*/
+		/* for each layer (- 2 because between last hidden and output already done) */
 		for (int k = this.getNeuralNetwork().getConstructorTab().length - 1 - 2; k >= 0; k--) {
 			/* for each neuron in this layer k */
 			for (int i = 0; i <= this.getNeuralNetwork().getLayer(k).size() - 1; i++) {
@@ -141,247 +140,98 @@ public class BackProp extends LearningAlgorithm {
 	}
 	
 
-//	/* launches the training */
-//	public void train(double[][] inputs, double[][] outputs) {
-//		double errorperepoch = 0;
-//		/*
-//		 * for each input, calculates the neurons's diff and synapases's weight
-//		 * diff
-//		 */
-//		for (int i = 0; i <= inputs.length - 1; i++) {
-//			this.calculateActivations(inputs[i]);
-//			this.calculateNeuronAndWeightDiffs(outputs[i]);
-//			double norme2 = 0;
-//			for (int j = 0; j <= outputs[0].length - 1; j++) {
-//				norme2 = norme2
-//						+ (this.getNeuralNetwork().getOutputlayer().get(j)
-//								.getActivation() - outputs[i][j])
-//						* (this.getNeuralNetwork().getOutputlayer().get(j)
-//								.getActivation() - outputs[i][j]) / 2
-//						/ this.epochSize;
-//			}
-//			errorperepoch = errorperepoch + norme2;
-//		}
-//		this.trainError.add(errorperepoch);
-//		this.testError.add(errorperepoch);
-//        
-//		/* changes the neurons's value and the synapses's weight */
-//		for (int i = 0; i <= this.getNeuralNetwork().getInputlayer().size() - 1; i++) {
-//			for (int j = 0; j <= this.getNeuralNetwork().getHiddenlayers().get(0)
-//					.getLayer().size() - 1; j++) {
-//				/*
-//				 * weight = weight + learningrate*weight diff // input/hidden
-//				 * layers
-//				 */
-//				this.getNeuralNetwork().getInputlayer().get(i).getOutputSynapses().get(j)
-//						.setWeight(this.getNeuralNetwork().getInputlayer().get(i)
-//								.getOutputSynapses().get(j).getWeight()
-//								+ this.learningRate
-//								* this.getNeuralNetwork().getInputlayer().get(i)
-//										.getOutputSynapses().get(j).getWeightDiff());
-//			}
-//		}
-//		for (int k = 0; k <= this.getNeuralNetwork().getHiddenlayers().size() - 2; k++) {
-//			for (int i = 0; i <= this.getNeuralNetwork().getHiddenlayers().get(k)
-//					.getLayer().size() - 1; i++) {
-//				for (int j = 0; j <= this.getNeuralNetwork().getHiddenlayers()
-//						.get(k + 1).getLayer().size() - 1; j++) {
-//					/*
-//					 * weight = weight + learningrate*weight diff // hidden
-//					 * layers
-//					 */
-//					this.getNeuralNetwork().getHiddenlayers().get(k).getLayer().get(i)
-//							.getOutputSynapses().get(j)
-//							.setWeight(this.getNeuralNetwork().getHiddenlayers()
-//									.get(k).getLayer().get(i).getOutputSynapses().get(j)
-//									.getWeight()
-//									+ this.learningRate
-//									* this.getNeuralNetwork().getHiddenlayers()
-//											.get(k).getLayer().get(i).getOutputSynapses().get(j)
-//											.getWeightDiff());
-//				}
-//			}
-//		}
-//		
-//		for (int i = 0; i <= this.getNeuralNetwork().getHiddenlayers()
-//				.get(this.getNeuralNetwork().getHiddenlayers().size() - 1).getLayer().size() - 1; i++) {
-//			for (int j = 0; j <= this.getNeuralNetwork().getOutputlayer().size() - 1; j++) {
-//				/*
-//				 * weight = weight + learningrate*weight diff // hidden
-//				 * layers/output, can be integrated in the previous case but
-//				 * doesn't matter for now
-//				 */
-//				this.getNeuralNetwork().getHiddenlayers()
-//						.get(this.getNeuralNetwork().getHiddenlayers().size() - 1)
-//						.getLayer().get(i).getOutputSynapses().get(j)
-//						.setWeight(this.getNeuralNetwork()
-//								.getHiddenlayers()
-//								.get(this.getNeuralNetwork().getHiddenlayers()
-//										.size() - 1).getLayer().get(i).getOutputSynapses().get(j)
-//								.getWeight()
-//								+ this.learningRate
-//								* this.getNeuralNetwork()
-//										.getHiddenlayers()
-//										.get(this.getNeuralNetwork()
-//												.getHiddenlayers().size() - 1)
-//										.getLayer().get(i).getOutputSynapses().get(j)
-//										.getWeightDiff());
-//			}
-//		}
-//		//System.out.println(this.neuralNetwork.getHiddenlayers().get(0).get(8).getOutputsynapses().get(3).getWeight());
-//	}
-//
-//	public void globaltraining(double[][] inputsdata, double[][] outputsdata) {
-//		List<double[][]> inputsepoch = splitIntoEpochs(inputsdata);
-//		List<double[][]> outputsepoch = splitIntoEpochs(outputsdata);
-//		for (int i = 0; i <= inputsepoch.size() - 1; i++) {
-//			this.train(inputsepoch.get(i), outputsepoch.get(i));
-//			this.outputdata.data.add(new Output(this.epochSize,
-//					this.learningRate, this.trainError.get(i), this.testError
-//							.get(i)));
-//		}
-//	}
-//
-//	/*test + training*/
-//	
-//	/* launches the training (inputs = one epoch) */
-//	public void train(double[][] inputsTraining, double[][] outputsTraining,
-//			double[][] inputsTest, double[][] outputsTest) {
-//		double errorPerEpochTraining = 0;
-//		double errorPerEpochTest = 0;
-//		/*
-//		 * for each input, calculates the neurons's diff and synapases's weight
-//		 * diff
-//		 */
-//		for (int i = 0; i <= inputsTraining.length - 1; i++) {
-//			this.calculateActivations(inputsTraining[i]);
-//			this.calculateNeuronAndWeightDiffs(inputsTraining[i]);
-//			// double norme2 = 0;
-//			// for(int j = 0; j<=outputsTraining.length - 1; j++){
-//			// norme2 += (this.neuralNetwork.getOutputlayer()[j].getActivation()
-//			// -
-//			// outputsTraining[i][j])*(this.neuralNetwork.getOutputlayer()[j].getActivation()
-//			// - outputsTraining[i][j])/2/inputsTraining.length;
-//			// }
-//			// errorPerEpochTraining += norme2;
-//		}
-//		// this.trainerror.add(errorPerEpochTraining);
-//
-//		/* changes the neurons's value and the synapses's weight */
-//		for (int i = 0; i <= this.getNeuralNetwork().getInputlayer().size() - 1; i++) {
-//			for (int j = 0; j <= this.getNeuralNetwork().getHiddenlayers().get(0)
-//					.getLayer().size() - 1; j++) {
-//				/*
-//				 * weight = weight + learningrate*weight diff // input/hidden
-//				 * layers
-//				 */
-//				this.getNeuralNetwork().getInputlayer().get(i).getOutputSynapses().get(j)
-//						.setWeight(this.getNeuralNetwork().getInputlayer().get(i)
-//								.getOutputSynapses().get(j).getWeight()
-//								+ this.learningRate
-//								* this.getNeuralNetwork().getInputlayer().get(i)
-//										.getOutputSynapses().get(j).getWeightDiff());
-//			}
-//		}
-//		for (int k = 0; k <= this.getNeuralNetwork().getHiddenlayers().size() - 2; k++) {
-//			for (int i = 0; i <= this.getNeuralNetwork().getHiddenlayers().get(k)
-//					.getLayer().size() - 1; i++) {
-//				for (int j = 0; j <= this.getNeuralNetwork().getHiddenlayers()
-//						.get(k + 1).getLayer().size() - 1; j++) {
-//					/*
-//					 * weight = weight + learningrate*weight diff // hidden
-//					 * layers
-//					 */
-//					this.getNeuralNetwork().getHiddenlayers().get(k).getLayer().get(i)
-//							.getOutputSynapses().get(j)
-//							.setWeight(this.getNeuralNetwork().getHiddenlayers()
-//									.get(k).getLayer().get(i).getOutputSynapses().get(j)
-//									.getWeight()
-//									+ this.learningRate
-//									* this.getNeuralNetwork().getHiddenlayers()
-//											.get(k).getLayer().get(i).getOutputSynapses().get(j)
-//											.getWeightDiff());
-//				}
-//			}
-//		}
-//		for (int i = 0; i <= this.getNeuralNetwork().getHiddenlayers()
-//				.get(this.getNeuralNetwork().getHiddenlayers().size() - 1).getLayer().size() - 1; i++) {
-//			for (int j = 0; j <= this.getNeuralNetwork().getOutputlayer().size() - 1; j++) {
-//				/*
-//				 * weight = weight + learningrate*weight diff // hidden
-//				 * layers/output, can be integrated in the previous case but
-//				 * doesn't matter for now
-//				 */
-//				this.getNeuralNetwork().getHiddenlayers()
-//						.get(this.getNeuralNetwork().getHiddenlayers().size() - 1)
-//						.getLayer().get(i).getOutputSynapses().get(j)
-//						.setWeight(this.getNeuralNetwork()
-//								.getHiddenlayers()
-//								.get(this.getNeuralNetwork().getHiddenlayers()
-//										.size() - 1).getLayer().get(i).getOutputSynapses().get(j)
-//								.getWeight()
-//								+ this.learningRate
-//								* this.getNeuralNetwork()
-//										.getHiddenlayers()
-//										.get(this.getNeuralNetwork()
-//												.getHiddenlayers().size() - 1)
-//										.getLayer().get(i).getOutputSynapses().get(j)
-//										.getWeightDiff());
-//			}
-//		}
-//
-//		/* Training error */
-//		for (int i = 0; i <= inputsTraining.length - 1; i++) {
-//			this.calculateActivations(inputsTraining[i]);
-//			double norme2 = 0;
-//			for (int j = 0; j <= outputsTraining.length - 1; j++) {
-//				norme2 += (this.getNeuralNetwork().getOutputlayer().get(j)
-//						.getActivation() - outputsTraining[i][j])
-//						* (this.getNeuralNetwork().getOutputlayer().get(j)
-//								.getActivation() - outputsTraining[i][j])
-//						/ 2
-//						/ inputsTraining.length;
-//			}
-//			errorPerEpochTraining += norme2;
-//		}
-//		this.trainError.add(errorPerEpochTraining);
-//
-//		/* Test error */
-//		for (int i = 0; i <= inputsTest.length - 1; i++) {
-//			this.calculateActivations(inputsTest[i]);
-//			double norme2 = 0;
-//			for (int j = 0; j <= outputsTest.length - 1; j++) {
-//				norme2 += (this.getNeuralNetwork().getOutputlayer().get(j)
-//						.getActivation() - outputsTest[i][j])
-//						* (this.getNeuralNetwork().getOutputlayer().get(j)
-//								.getActivation() - outputsTest[i][j])
-//						/ 2
-//						/ inputsTest.length;
-//			}
-//			errorPerEpochTest += norme2;
-//		}
-//		this.testError.add(errorPerEpochTest);
-//
-//	}
-//
-//	/* launches the training (inputs = all the epochs) */
-//	public void globaltraining(double[][] inputsTraining,
-//			double[][] outputsTraining, double[][] inputsTest,
-//			double[][] outputsTest) {
-//
-//		List<double[][]> inputsTrainingEpochs = splitIntoEpochs(inputsTraining);
-//		List<double[][]> outputsTrainingEpochs = splitIntoEpochs(outputsTraining);
-//		/* problem, not the same epoch sizes ? */
-//		List<double[][]> inputsTestEpochs = splitIntoEpochs(inputsTest);
-//		List<double[][]> outputsTestEpochs = splitIntoEpochs(outputsTest);
-//
-//		for (int i = 0; i <= inputsTrainingEpochs.size() - 1; i++) {
-//			this.train(inputsTrainingEpochs.get(i),
-//					outputsTrainingEpochs.get(i), inputsTestEpochs.get(i),
-//					outputsTestEpochs.get(i));
-//			this.outputdata.data.add(new Output(this.epochSize,
-//					this.learningRate, this.trainError.get(i), this.testError
-//							.get(i)));
-//		}
-//	}
+	/* launches the training on an epoch*/
+	public void train(double[][] inputs, double[][] outputs) {
+		
+		/* for each input, calculates the neuronsDiff and synapases's weightDiff */
+		for (int i = 0; i <= inputs.length - 1; i++) {
+			this.calculateActivations(inputs[i]);
+			this.calculateNeuronAndWeightDiffs(outputs[i]);
+		}
+        
+		/* when it's done for all inputs, changes the synapses's weight */
+		/* for each layer from input layer to last hidden layer (for each layer of synapses) */
+		for(int i=0; i<=this.getNeuralNetwork().getConstructorTab().length-2; i++){
+			/* for each neuron in this layer */
+			for(int j=0; j<=this.getNeuralNetwork().getLayer(i).size()-1; j++){
+				/*for each outputSynapse of this neuron */
+				for(int k=0; k<=this.getNeuralNetwork().getLayer(i+1).size()-1; k++){
+					Synapse s = ((Neuron)this.getNeuralNetwork().getLayer(i).get(j)).getOutputSynapses().get(k);
+					s.setWeight(s.getWeight()-this.learningRate*(s.getWeightDiff()));
+				}
+			}
+		}
+		
+	}
+		
+	/* launches the training on all the given data */
+	public void globaltraining(double[][] inputsData, double[][] outputsData) {
+		List<double[][]> inputsEpoch = splitIntoEpochs(inputsData);
+		List<double[][]> outputsEpoch = splitIntoEpochs(outputsData);
+		for (int i = 0; i <= inputsEpoch.size() - 1; i++) {
+			this.train(inputsEpoch.get(i), outputsEpoch.get(i));
+		}
+	}
+	
+	/* launches the training on all the given data and gives statistical data to analyze perfomances*/
+	public void globaltraining(double[][] inputsDataTraining, double[][] outputsDataTraining, double[][] inputsDataTest, double[][] outputsDataTest) {
+		List<double[][]> inputsEpoch = splitIntoEpochs(inputsDataTraining);
+		List<double[][]> outputsEpoch = splitIntoEpochs(outputsDataTraining);
+		
+		int cpt = 0;
+		for (int i = 0; i <= inputsEpoch.size() - 1; i++) {
+			this.train(inputsEpoch.get(i), outputsEpoch.get(i));
+			cpt += 1;
+			if(cpt>=this.numberOfEpochBetweenEachMeasure){
+				/*statistics on training set*/
+				double quadraticErrorTraining = 0;
+				double percentageErrorTraining = 1;
+				for(int j=0; j<=inputsDataTraining.length; j++){
+					this.calculateActivations(inputsDataTraining[j]);
+					int maxOutputIndex = 0;
+					int realOutputIndex = 0;
+					
+					for(int k=0; k<=outputsDataTraining[0].length; k++){
+						double calculatedOutputK = this.getNeuralNetwork().getOutputlayer().get(k).getActivation();
+						double calculatedOutputMax = this.getNeuralNetwork().getOutputlayer().get(maxOutputIndex).getActivation();
+						
+						/* quadratic error*/
+						quadraticErrorTraining += 0.5*( outputsDataTraining[j][k] - calculatedOutputK )*( outputsDataTraining[j][k] - calculatedOutputK );
+						/* percentage error*/
+						if( calculatedOutputK > calculatedOutputMax ){maxOutputIndex = k;}
+						if( outputsDataTraining[j][k]==1){realOutputIndex = k;}
+					}
+					/* if predicted well*/
+					if(maxOutputIndex == realOutputIndex){percentageErrorTraining -= 1/inputsDataTraining.length;}
+				}
+				
+				/*statistics on test set*/
+				double quadraticErrorTest = 0;
+				double percentageErrorTest = 1;
+				for(int j=0; j<=inputsDataTest.length; j++){
+					this.calculateActivations(inputsDataTest[j]);
+					int maxOutputIndex = 0;
+					int realOutputIndex = 0;
+					
+					for(int k=0; k<=outputsDataTest[0].length; k++){
+						double calculatedOutputK = this.getNeuralNetwork().getOutputlayer().get(k).getActivation();
+						double calculatedOutputMax = this.getNeuralNetwork().getOutputlayer().get(maxOutputIndex).getActivation();
+						
+						/* quadratic error*/
+						quadraticErrorTraining += 0.5*( outputsDataTest[j][k] - calculatedOutputK )*( outputsDataTest[j][k] - calculatedOutputK );
+						/* percentage error*/
+						if( calculatedOutputK > calculatedOutputMax ){maxOutputIndex = k;}
+						if( outputsDataTest[j][k]==1){realOutputIndex = k;}
+					}
+					/* if predicted well*/
+					if(maxOutputIndex == realOutputIndex){percentageErrorTraining -= 1/inputsDataTest.length;}
+				}
+				
+				this.outputData.getData().add(new Output(quadraticErrorTraining, percentageErrorTraining, quadraticErrorTest, percentageErrorTest));
+				
+				cpt = 0;
+			}
+		}
+	}
+
 }

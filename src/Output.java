@@ -1,14 +1,15 @@
 public class Output {
-	public int epochsize;
-	public double learningrate;
-	public double trainerror;
-	public double testerror;
+	public double quadraticErrorTraining;
+	public double percentageErrorTraining;
+	public double quadraticErrorTest;
+	public double percentageErrorTest;
 
-	public Output(int epochsize, double learningrate, double trainerror,
-			double testerror) {
-		this.epochsize = epochsize;
-		this.learningrate = learningrate;
-		this.trainerror = trainerror;
-		this.testerror = testerror;
+	public Output(double quadraticErrorTraining,
+			double percentageErrorTraining, double quadraticErrorTest,
+			double percentageErrorTest) {
+		this.quadraticErrorTraining = quadraticErrorTraining;
+		this.percentageErrorTraining = percentageErrorTraining;
+		this.quadraticErrorTest = quadraticErrorTest;
+		this.percentageErrorTest = percentageErrorTest;
 	}
 }

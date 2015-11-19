@@ -6,41 +6,38 @@ public abstract class LearningAlgorithm {
 	private NeuralNetwork neuralNetwork;
 	public double learningRate;
 	public int epochSize;
-	public ArrayList<Double> trainError;
-	public ArrayList<Double> testError;
+	public int numberOfEpochBetweenEachMeasure;
 	public ToCsv csv;
-	public OutputData outputdata;
+	public OutputData outputData;
 	
 	public LearningAlgorithm(NeuralNetwork neuralNetwork){
 		this.setNeuralNetwork(neuralNetwork);
 		this.learningRate=0.01;
 		this.epochSize=20;
+		this.numberOfEpochBetweenEachMeasure=1;
 		this.csv = new ToCsv(this);
-		trainError = new ArrayList<Double>();
-		testError = new ArrayList<Double>();
-		outputdata = new OutputData(new ArrayList<Output>());
+		outputData = new OutputData(new ArrayList<Output>());
 	}
 	
-	public LearningAlgorithm(NeuralNetwork neuralNetwork, double learningRate, int epochSize){
+	public LearningAlgorithm(NeuralNetwork neuralNetwork, double learningRate, int epochSize, int numberOfEpochBetweenEachMeasure){
 		this.setNeuralNetwork(neuralNetwork);
 		this.learningRate=learningRate;
 		this.epochSize=epochSize;
+		this.numberOfEpochBetweenEachMeasure=numberOfEpochBetweenEachMeasure;
 		this.csv = new ToCsv(this);
-		trainError = new ArrayList<Double>();
-		testError = new ArrayList<Double>();
-		outputdata = new OutputData(new ArrayList<Output>());
+		outputData = new OutputData(new ArrayList<Output>());
 	}
 	
 	abstract public void calculateActivations(double[] input);
 	
 	abstract public void calculateNeuronAndWeightDiffs(double[] ouput);
 	
-//	abstract public void train(double[][] inputsTraining,
-//			double[][] outputsTraining);
-//
-//	abstract public void globaltraining(double[][] inputsTraining,
-//			double[][] outputsTraining);
-//
+	abstract public void train(double[][] inputsTraining,
+			double[][] outputsTraining);
+
+	abstract public void globaltraining(double[][] inputsTraining,
+			double[][] outputsTraining);
+
 //	abstract public void train(double[][] inputsTraining,
 //			double[][] outputsTraining, double[][] inputsTest,
 //			double[][] outputsTest);

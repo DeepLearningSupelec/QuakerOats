@@ -37,6 +37,10 @@ public class testXOR {
 		System.out.println("out_o1 : " + ff.getOutputlayer().get(0).getActivation());
 		
 		bp.calculateNeuronAndWeightDiffs(outputdata[0]);
+		
+		System.out.println("neuronDiff : " + ff.getOutputlayer().get(0).getNeurondiff());
+		System.out.println("derivée : " + ff.getOutputlayer().get(0).getActivationFunction().applyDerivative(ff.getOutputlayer().get(0).getActivation()));
+		
 		System.out.println("delta w5 : " + ff.getHiddenlayers().get(0).get(0).getOutputSynapses().get(0).getWeightDiff());
 		System.out.println("delta w6 : " + ff.getHiddenlayers().get(0).get(1).getOutputSynapses().get(0).getWeightDiff());
 		System.out.println("delte w1 : " + ff.getInputlayer().get(0).getOutputSynapses().get(0).getWeightDiff());
