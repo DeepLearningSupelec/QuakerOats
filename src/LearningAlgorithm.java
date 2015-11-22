@@ -8,25 +8,26 @@ public abstract class LearningAlgorithm {
 	public int epochSize;
 	public int numberOfEpochBetweenEachMeasure;
 	public ToCsv csv;
-	public OutputData outputData;
+	public ArrayList<Output> outputData;
 
+	//Secondary constructors
 	public LearningAlgorithm(NeuralNetwork neuralNetwork) {
-		this.setNeuralNetwork(neuralNetwork);
-		this.learningRate = 0.1;
-		this.epochSize = 1;
-		this.numberOfEpochBetweenEachMeasure = 1000;
-		this.csv = new ToCsv(this);
-		outputData = new OutputData(new ArrayList<Output>());
+		this(neuralNetwork, 0.1, 1, 1000);
 	}
 
+	//Primary constructor
 	public LearningAlgorithm(NeuralNetwork neuralNetwork, double learningRate,
 			int epochSize, int numberOfEpochBetweenEachMeasure) {
-		this.setNeuralNetwork(neuralNetwork);
+		this.neuralNetwork = neuralNetwork;
+		//declare this algorithm as the algorithm of the network
+		//in case we want to change the learning algorithm
+		//this.neuralNetwork.setLearningAlgorithm(this);
+		//I think it's useless
 		this.learningRate = learningRate;
 		this.epochSize = epochSize;
 		this.numberOfEpochBetweenEachMeasure = numberOfEpochBetweenEachMeasure;
 		this.csv = new ToCsv(this);
-		outputData = new OutputData(new ArrayList<Output>());
+		this.outputData = new ArrayList<Output>();
 	}
 
 	abstract public void calculateActivations(double[] input);

@@ -30,7 +30,7 @@ public class ToCsv {
 			fileWriter.append(NEW_LINE_SEPARATOR);
 
 			// Write a new output object list to the CSV file
-			for (Output output : this.learningAlgorithm.outputData.getData()) {
+			for (Output output : this.learningAlgorithm.outputData) {
 				fileWriter
 						.append(String.valueOf(output.quadraticErrorTraining));
 				fileWriter.append(COMMA_DELIMITER);

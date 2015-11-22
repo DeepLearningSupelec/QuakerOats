@@ -1,21 +1,18 @@
 
 public class FeedForward extends NeuralNetwork {
 
-	/* constructor */
 	public FeedForward(int[] constructorTab) throws InvalidNetworkConstruction {
 		super(constructorTab);
 	}
 	
-	public FeedForward(int[] constructorTab, double bias) throws InvalidNetworkConstruction {
+	public FeedForward(int[] constructorTab, Boolean bias) throws InvalidNetworkConstruction {
 		super(constructorTab, bias);
 	}
-
-//	public FeedForward(int[] constructorTab,
-//			ActivationFunction activationFunction,
-//			LearningAlgorithm learningAlgorithm)
-//			throws InvalidNetworkConstruction {
-//		super(constructorTab, activationFunction, learningAlgorithm);
-//	}
+	
+	public FeedForward(int[] constructorTab, double learningRate,
+			int epochSize, int numberOfEpochBetweenEachMeasure, Boolean bias) throws InvalidNetworkConstruction {
+		super(constructorTab, learningRate, epochSize, numberOfEpochBetweenEachMeasure, bias);
+	}
 
 	/* links the network */
 	public void linkNetwork() {

@@ -4,9 +4,12 @@ public class testXOR {
 	public static void main(String[] args) throws InvalidNetworkConstruction {
 		// TODO Auto-generated method stub
 		int[] constructorTab =new int[]{2,2,1};
-		FeedForward ff = new FeedForward(constructorTab, 0);
-		BackProp bp = new BackProp(ff);
-		ff.setLearningAlgorithm(bp);
+		FeedForward ff = new FeedForward(constructorTab, false);
+
+		//No need to reuse a constructor, it is already done when ff is constructed
+		//BackProp bp = new BackProp(ff);
+		LearningAlgorithm bp = ff.getLearningAlgorithm();
+		
 		ff.linkNetwork();
 		
 		ff.getInputlayer().get(0).getOutputSynapses().get(0).setWeight(0.8);

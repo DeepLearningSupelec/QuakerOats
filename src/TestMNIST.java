@@ -7,8 +7,11 @@ public class TestMNIST {
 		
 		int[] constructorTab = new int[] {784, 90, 10 };
 		FeedForward ff = new FeedForward(constructorTab);
-		BackProp bp = new BackProp(ff);
-		ff.setLearningAlgorithm(bp);
+		
+		//No need to reuse a constructor, it is already done when ff is constructed
+		//BackProp bp = new BackProp(ff);
+		LearningAlgorithm bp = ff.getLearningAlgorithm();
+		
 		ff.linkNetwork();
 		
 		MnistManager trainingDataManager = new MnistManager(

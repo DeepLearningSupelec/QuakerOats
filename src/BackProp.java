@@ -2,7 +2,6 @@ import java.util.List;
 
 public class BackProp extends LearningAlgorithm {
 
-	/* constructor */
 	public BackProp(NeuralNetwork neuralNetwork) {
 		super(neuralNetwork);
 	}
@@ -217,8 +216,8 @@ public class BackProp extends LearningAlgorithm {
 		List<double[][]> inputsEpoch = splitIntoEpochs(inputsDataTraining);
 		List<double[][]> outputsEpoch = splitIntoEpochs(outputsDataTraining);
 		
-		/* point zero, sans apprentissage */
-		if(true){ //just to remove variable duplicated erro message
+		/* error without any training, point zero */
+		if(true){ //just to remove variable duplicated error message
 			double quadraticErrorTraining = 0;
 			double percentageErrorTraining = 1;
 			double nbOfErrorTraining = 0;
@@ -268,10 +267,10 @@ public class BackProp extends LearningAlgorithm {
 			}
 			percentageErrorTest = 1 - nbOfErrorTest/inputsDataTraining.length;
 			
-			this.outputData.getData().add(new Output(quadraticErrorTraining, percentageErrorTraining, quadraticErrorTest, percentageErrorTest));
+			this.outputData.add(new Output(quadraticErrorTraining, percentageErrorTraining, quadraticErrorTest, percentageErrorTest));
 		}
 		
-		/* rest */
+		/* then the training begins (with statistical measures) */
 		int cpt = 0;
 		for (int i = 0; i <= inputsEpoch.size() - 1; i++) {
 			this.train(inputsEpoch.get(i), outputsEpoch.get(i));
@@ -327,7 +326,7 @@ public class BackProp extends LearningAlgorithm {
 				}
 				percentageErrorTest = 1 - nbOfErrorTest/inputsDataTest.length;
 				
-				this.outputData.getData().add(new Output(quadraticErrorTraining, percentageErrorTraining, quadraticErrorTest, percentageErrorTest));
+				this.outputData.add(new Output(quadraticErrorTraining, percentageErrorTraining, quadraticErrorTest, percentageErrorTest));
 				
 				cpt = 0;
 			}
