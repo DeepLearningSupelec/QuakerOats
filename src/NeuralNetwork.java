@@ -20,6 +20,11 @@ public abstract class NeuralNetwork {
 		this(constructorTab, 0.1, 1, 1000, bias);
 	}
 	
+	public NeuralNetwork(int[] constructorTab, double learningRate,
+			int epochSize, int numberOfEpochBetweenEachMeasure) throws InvalidNetworkConstruction{
+		this(constructorTab, learningRate, epochSize, numberOfEpochBetweenEachMeasure, true);
+	}
+	
 	//Primary constructor
 	
 	public NeuralNetwork(int[] constructorTab, double learningRate,

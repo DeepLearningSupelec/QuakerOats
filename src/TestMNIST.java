@@ -6,7 +6,7 @@ public class TestMNIST {
 			InvalidNetworkConstruction {
 		
 		int[] constructorTab = new int[] {784, 90, 10 };
-		FeedForward ff = new FeedForward(constructorTab);
+		FeedForward ff = new FeedForward(constructorTab, 0.1, 1, 1000);
 		
 		//No need to reuse a constructor, it is already done when ff is constructed
 		//BackProp bp = new BackProp(ff);
@@ -18,10 +18,10 @@ public class TestMNIST {
 				"C:/Users/Léo/workspace/dl/MNISTData/train-images.idx3-ubyte",
 				"C:/Users/Léo/workspace/dl/MNISTData/train-labels.idx1-ubyte");
 		
-		double[][] inputsDataTraining = new double[42000][28*28];
-		double[][] outputsDataTraining = new double[42000][10];
+		double[][] inputsDataTraining = new double[60000][28*28];
+		double[][] outputsDataTraining = new double[60000][10];
 		
-		for (int i=0; i<42000; i++) {
+		for (int i=0; i<60000; i++) {
 			trainingDataManager.setCurrent(i+1);
 			int[][] a = trainingDataManager.readImage();
 			for (int j = 0; j <= 27; j++) {
