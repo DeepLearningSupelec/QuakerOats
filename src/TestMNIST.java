@@ -33,6 +33,18 @@ public class TestMNIST {
 			outputsDataTraining[i][b] = 1;
 		}
 		
+		//files 5 times
+		
+		double[][] inputsDataTraining5 = new double[300000][28*28];
+		double[][] outputsDataTraining5 = new double[300000][10];
+
+		for(int i=0; i<4; i++){
+			for(int j=0; j<60000; j++){
+				inputsDataTraining5[i*60000+j]=inputsDataTraining[j];
+				outputsDataTraining5[i*60000+j]=outputsDataTraining[j];
+			}
+		}
+		
 		MnistManager testDataManager = new MnistManager(
 				"C:/Users/Léo/workspace/dl/MNISTData/t10k-images.idx3-ubyte",
 				"C:/Users/Léo/workspace/dl/MNISTData/t10k-labels.idx1-ubyte");
@@ -52,7 +64,19 @@ public class TestMNIST {
 			outputsDataTest[i][b] = 1;
 		}
 		
-		bp.globaltraining(inputsDataTraining, outputsDataTraining, inputsDataTest, outputsDataTest);
+		//files 5 times
+		
+		double[][] inputsDataTest5 = new double[300000][28*28];
+		double[][] outputsDataTest5 = new double[300000][10];
+
+		for(int i=0; i<4; i++){
+			for(int j=0; j<60000; j++){
+				inputsDataTest5[i*60000+j]=inputsDataTest[j];
+				outputsDataTest5[i*60000+j]=outputsDataTest[j];
+			}
+		}
+		
+		bp.globaltraining(inputsDataTraining5, outputsDataTraining5, inputsDataTest5, outputsDataTest5);
 		
 		ToCsv csv = new ToCsv(bp);
 		
