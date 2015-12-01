@@ -64,19 +64,7 @@ public class TestMNIST {
 			outputsDataTest[i][b] = 1;
 		}
 		
-		//files 5 times
-		
-		double[][] inputsDataTest5 = new double[300000][28*28];
-		double[][] outputsDataTest5 = new double[300000][10];
-
-		for(int i=0; i<4; i++){
-			for(int j=0; j<60000; j++){
-				inputsDataTest5[i*60000+j]=inputsDataTest[j];
-				outputsDataTest5[i*60000+j]=outputsDataTest[j];
-			}
-		}
-		
-		bp.globaltraining(inputsDataTraining5, outputsDataTraining5, inputsDataTest5, outputsDataTest5);
+		bp.globaltraining(inputsDataTraining, outputsDataTraining, inputsDataTest, outputsDataTest);
 		
 		ToCsv csv = new ToCsv(bp);
 		

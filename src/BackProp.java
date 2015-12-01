@@ -211,7 +211,7 @@ public class BackProp extends LearningAlgorithm {
 		}
 	}
 	
-	/* launches the training on all the given data and gives statistical data to analyze perfomances*/
+	/* launches the training on all the given data and gives statistical data to analyze performances*/
 	public void globaltraining(double[][] inputsDataTraining, double[][] outputsDataTraining, double[][] inputsDataTest, double[][] outputsDataTest) {
 		List<double[][]> inputsEpoch = splitIntoEpochs(inputsDataTraining);
 		List<double[][]> outputsEpoch = splitIntoEpochs(outputsDataTraining);
@@ -270,67 +270,69 @@ public class BackProp extends LearningAlgorithm {
 			this.outputData.add(new Output(quadraticErrorTraining, percentageErrorTraining, quadraticErrorTest, percentageErrorTest));
 		}
 		
-		/* then the training begins (with statistical measures) */
-		int cpt = 0;
-		for (int i = 0; i <= inputsEpoch.size() - 1; i++) {
-			this.train(inputsEpoch.get(i), outputsEpoch.get(i));
-			cpt += 1;
-			if(cpt>=this.numberOfEpochBetweenEachMeasure){
-				/*statistics on training set*/
-				double quadraticErrorTraining = 0;
-				double percentageErrorTraining = 1;
-				double nbOfErrorTraining = 0;
-				for(int j=0; j<=inputsDataTraining.length - 1; j++){
-					this.calculateActivations(inputsDataTraining[j]);
-					int maxOutputIndex = 0;
-					int realOutputIndex = 0;
-					
-					for(int k=0; k<=outputsDataTraining[0].length - 1; k++){
-						double calculatedOutputK = this.getNeuralNetwork().getOutputlayer().get(k).getActivation();
-						double calculatedOutputMax = this.getNeuralNetwork().getOutputlayer().get(maxOutputIndex).getActivation();
+		for(int a = 0; a<=4; a++){
+			/* then the training begins (with statistical measures) */
+			int cpt = 0;
+			for (int i = 0; i <= inputsEpoch.size() - 1; i++) {
+				this.train(inputsEpoch.get(i), outputsEpoch.get(i));
+				cpt += 1;
+				if(cpt>=this.numberOfEpochBetweenEachMeasure){
+					/*statistics on training set*/
+					double quadraticErrorTraining = 0;
+					double percentageErrorTraining = 1;
+					double nbOfErrorTraining = 0;
+					for(int j=0; j<=inputsDataTraining.length - 1; j++){
+						this.calculateActivations(inputsDataTraining[j]);
+						int maxOutputIndex = 0;
+						int realOutputIndex = 0;
 						
-						/* quadratic error*/
-						quadraticErrorTraining += 0.5*( outputsDataTraining[j][k] - calculatedOutputK )*( outputsDataTraining[j][k] - calculatedOutputK );
-						/* percentage error*/
-						if( calculatedOutputK > calculatedOutputMax ){maxOutputIndex = k;}
-						if( outputsDataTraining[j][k]==1){realOutputIndex = k;}
+						for(int k=0; k<=outputsDataTraining[0].length - 1; k++){
+							double calculatedOutputK = this.getNeuralNetwork().getOutputlayer().get(k).getActivation();
+							double calculatedOutputMax = this.getNeuralNetwork().getOutputlayer().get(maxOutputIndex).getActivation();
+							
+							/* quadratic error*/
+							quadraticErrorTraining += 0.5*( outputsDataTraining[j][k] - calculatedOutputK )*( outputsDataTraining[j][k] - calculatedOutputK );
+							/* percentage error*/
+							if( calculatedOutputK > calculatedOutputMax ){maxOutputIndex = k;}
+							if( outputsDataTraining[j][k]==1){realOutputIndex = k;}
+						}
+						/* if predicted well*/
+						//if(maxOutputIndex == realOutputIndex){percentageErrorTraining -= 1/inputsDataTraining.length;}
+						if(maxOutputIndex == realOutputIndex){nbOfErrorTraining += 1;}
 					}
-					/* if predicted well*/
-					//if(maxOutputIndex == realOutputIndex){percentageErrorTraining -= 1/inputsDataTraining.length;}
-					if(maxOutputIndex == realOutputIndex){nbOfErrorTraining += 1;}
-				}
-				percentageErrorTraining = 1 - nbOfErrorTraining/inputsDataTraining.length;
-				
-				/*statistics on test set*/
-				double quadraticErrorTest = 0;
-				double percentageErrorTest = 1;
-				double nbOfErrorTest = 0;
-				for(int j=0; j<=inputsDataTest.length - 1; j++){
-					this.calculateActivations(inputsDataTest[j]);
-					int maxOutputIndex = 0;
-					int realOutputIndex = 0;
+					percentageErrorTraining = 1 - nbOfErrorTraining/inputsDataTraining.length;
 					
-					for(int k=0; k<=outputsDataTest[0].length - 1; k++){
-						double calculatedOutputK = this.getNeuralNetwork().getOutputlayer().get(k).getActivation();
-						double calculatedOutputMax = this.getNeuralNetwork().getOutputlayer().get(maxOutputIndex).getActivation();
+					/*statistics on test set*/
+					double quadraticErrorTest = 0;
+					double percentageErrorTest = 1;
+					double nbOfErrorTest = 0;
+					for(int j=0; j<=inputsDataTest.length - 1; j++){
+						this.calculateActivations(inputsDataTest[j]);
+						int maxOutputIndex = 0;
+						int realOutputIndex = 0;
 						
-						/* quadratic error*/
-						quadraticErrorTest += 0.5*( outputsDataTest[j][k] - calculatedOutputK )*( outputsDataTest[j][k] - calculatedOutputK );
-						/* percentage error*/
-						if( calculatedOutputK > calculatedOutputMax ){maxOutputIndex = k;}
-						if( outputsDataTest[j][k]==1){realOutputIndex = k;}
+						for(int k=0; k<=outputsDataTest[0].length - 1; k++){
+							double calculatedOutputK = this.getNeuralNetwork().getOutputlayer().get(k).getActivation();
+							double calculatedOutputMax = this.getNeuralNetwork().getOutputlayer().get(maxOutputIndex).getActivation();
+							
+							/* quadratic error*/
+							quadraticErrorTest += 0.5*( outputsDataTest[j][k] - calculatedOutputK )*( outputsDataTest[j][k] - calculatedOutputK );
+							/* percentage error*/
+							if( calculatedOutputK > calculatedOutputMax ){maxOutputIndex = k;}
+							if( outputsDataTest[j][k]==1){realOutputIndex = k;}
+						}
+						/* if predicted well*/
+						//if(maxOutputIndex == realOutputIndex){percentageErrorTest -= 1/inputsDataTest.length;}
+						if(maxOutputIndex == realOutputIndex){nbOfErrorTest += 1;}
 					}
-					/* if predicted well*/
-					//if(maxOutputIndex == realOutputIndex){percentageErrorTest -= 1/inputsDataTest.length;}
-					if(maxOutputIndex == realOutputIndex){nbOfErrorTest += 1;}
+					percentageErrorTest = 1 - nbOfErrorTest/inputsDataTest.length;
+					
+					this.outputData.add(new Output(quadraticErrorTraining, percentageErrorTraining, quadraticErrorTest, percentageErrorTest));
+					
+					cpt = 0;
 				}
-				percentageErrorTest = 1 - nbOfErrorTest/inputsDataTest.length;
-				
-				this.outputData.add(new Output(quadraticErrorTraining, percentageErrorTraining, quadraticErrorTest, percentageErrorTest));
-				
-				cpt = 0;
 			}
-		}
+		}	
 	}
 
 }
